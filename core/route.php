@@ -1,63 +1,61 @@
 <?php
 
+namespace core;
+
+
 class Route
 {
     static function start()
     {
-        // контроллер и экшен по умолчанию
-        $controllerName = 'Main';
-        $actionName = 'index';
 
         $routes = explode('/', $_SERVER['REQUEST_URI']);
 
-        // получаем имя контроллера
+        // получаем имя контроллера и экшена из массива ури
         if (!empty($routes[1])) {
             $controllerName = $routes[1];
+        }else {
+            $controllerName = 'Main';
         }
 
-        // получаем имя экшена
         if (!empty($routes[2])) {
             $actionName = $routes[2];
+        }else {
+            $actionName = 'index';
         }
 
-        $modelName      = 'Model' . ucfirst($controllerName);
-        $controllerName = 'Controller' . ucfirst($controllerName);
+        $controllerName = ucfirst($controllerName) . 'Controller';
+        $modelName      = ucfirst($controllerName) . 'Model';
         $actionName     = 'action' . ucfirst($actionName);
 
-        // подцепляем файл с классом модели (файла модели может и не быть)
-        $modelFile = $modelName . '.php';
-        $modelPath = registry::get('models') . $modelFile;
+        $controllerFile = $controllerName . '.php';
+        $modelFile      = $modelName . '.php';
+
+        $controllerPath = Registry::get('controllers') . $controllerFile;
+        $modelPath      = Registry::get('models') . $modelFile;
 
         if (is_file($modelPath)) {
-            include registry::get('models') . $modelFile;
+            include  Registry::get('models') . $modelFile;
         }
-
-        // подцепляем файл с классом контроллера
-        $controllerFile = $controllerName . '.php';
-        $controllerPath = registry::get('controllers') . $controllerFile;
 
         if (is_file($controllerPath)) {
-            include registry::get('controllers') . $controllerFile;
-        } else {
-            Route::ErrorPage404();
-        }
-
-        // создаем объект класса контроллер
-        $controller = new $controllerName;
-        $action = $actionName;
-
-        if (method_exists($controller, $action)) {
-            $controller->$action();
-        } else {
-            Route::ErrorPage404();
+            require_once Registry::get('controllers') . $controllerFile;
+            $controller = '\\controllers\\' . $controllerName;
+            $newObjController = new $controller;
+            if (method_exists($newObjController, $actionName)) {
+                $newObjController->$actionName();
+            }else {
+                Route::Error404();
+            }
+        }else {
+            Route::Error404();
         }
     }
 
-    static function ErrorPage404()
+    static function Error404()
     {
-        $host = 'http://' . $_SERVER['HTTP_HOST'] . '/';
-        header('HTTP/1.1 404 Not Found');
-        header("Status: 404 Not Found");
-        header('Location:' . $host . '404');
+
+        header("HTTP/1.0 404 Not Found");
+        include Registry::get('views') . '404.tpl';
     }
+
 }

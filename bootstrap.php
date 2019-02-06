@@ -1,9 +1,11 @@
 <?php
 
-// Путь к папкам через реестр
+use core\Route;
+use core\Registry;
 
-registry::set('controllers', $_SERVER['DOCUMENT_ROOT'] . "/controllers/");
-registry::set('models', $_SERVER['DOCUMENT_ROOT'] . "/models/");
-registry::set('views', $_SERVER['DOCUMENT_ROOT'] . "/views/");
+Registry::set('controllers', $_SERVER['DOCUMENT_ROOT'] . "/controllers/");
+Registry::set('models', $_SERVER['DOCUMENT_ROOT'] . "/models/");
+Registry::set('views', $_SERVER['DOCUMENT_ROOT'] . "/views/");
+Registry::set('core', $_SERVER['DOCUMENT_ROOT'] . "/core/");
 
 Route::start();

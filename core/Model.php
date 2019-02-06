@@ -1,9 +1,9 @@
 <?php
 
+namespace core;
+
+
 class Model
 {
-    protected function getData()
-    {
 
-    }
 }

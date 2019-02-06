@@ -1,5 +1,7 @@
 <?php
 
+namespace core;
+
 class Registry
 {
     private static $_data = array();

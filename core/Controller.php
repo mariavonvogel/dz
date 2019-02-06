@@ -1,5 +1,8 @@
 <?php
 
+namespace core;
+
+
 class Controller
 {
     protected $_model;
