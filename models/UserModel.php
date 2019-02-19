@@ -30,11 +30,12 @@ class UserModel extends Model
      * @param $firstName string имя пользователя
      * @param $lastName string фамилия пользователя
      * @param $email string мыло пользователя
-     * @param $type array тип пользователя
+     * @param $type string тип пользователя
      */
     public function add($firstName, $lastName, $email, $type)
     {
-        $id = end(array_keys($this->_users)) + 1;
+        $arrayKeys = array_keys($this->_users);
+        $id = end($arrayKeys) + 1;
         $this->_users[$id] = array(
             'id'        => $id,
             'firstName' => $firstName,
@@ -51,7 +52,7 @@ class UserModel extends Model
      * @param $firstName string имя пользователя
      * @param $lastName string фамилия пользователя
      * @param $email string мыло пользователя
-     * @param $type array тип пользователя
+     * @param $type string тип пользователя
      */
     public function edit($id, $firstName, $lastName, $email, $type)
     {
