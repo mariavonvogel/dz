@@ -45,6 +45,7 @@ class UserController extends Controller
     public function actionOutput()
     {
         $this->_model->all();
-        $this->_view->render('views/outputUsers.tpl', $this->_model->_users);
+        $data = json_decode(json_encode($this->_model->_users), true );
+        $this->_view->render('views/outputUsers.tpl', $data);
     }
 }

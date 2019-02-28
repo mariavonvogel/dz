@@ -7,11 +7,11 @@
 
     <title>Ввод данных</title>
 
-    <script type="text/javascript"
-            src="\vendor\twbs\bootstrap\site\docs\4.2\assets\js\vendor\jquery-slim.min.js"></script>
+
     <link href="/vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script >
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/design/css/users.css">
 
@@ -37,7 +37,7 @@
 
 
 
-<table class="table table_dark" id="user-list"  style="text-align: center; width: 800px;">
+    <table class="table table_dark" id="user-list"  style="text-align: center; width: 800px;">
         <thead><tr>
             <th>ID</th>
             <th>Имя</th>
@@ -49,19 +49,42 @@
         </tr></thead>
 
         {foreach $users as $user}
-            <tbody><tr>
+
+            <tbody><tr class="data-id" value="{$user['id']}">
                 <td>{$user['id']}</td>
                 <td>{$user['firstName']}</td>
                 <td>{$user['lastName']}</td>
                 <td>{$user['email']}</td>
                 <td>{$user['type']}</td>
                 <td><a href='/main/index/?id={$user['id']}'>Редактировать</a></td>
-                <td><a href='/main/index/?id={$user['id']}&action=delete'>Удалить</a></td>
+                <td><input class="user-delete" type="button" value="Удалить"></td>
+
             </tr></tbody>
         {/foreach}
     </table>
 
-<p></p>
+    <script>
+        $(function (){
+            $('.table .data-id').on('click', function() {
+                var id = $(this).attr('value');
+                $(this).hide();
+                $.ajax({
+                    url: "/main/index/?id="{" + id + "}"&action=delete",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        data = JSON.parse(data);
+
+                    }
+
+                });
+            });
+        });
+
+    </script>
+
+    <p></p>
     <div class="main">
         <div class="more_w3ls">
             <a href="/main/index">Вернуться на главную</a>

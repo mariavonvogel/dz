@@ -23,17 +23,20 @@ class MainController extends Controller
             $this->actionDelete($id);
         } else {
             $this->_view->id = $id;
+            $this->_view->generate('views/mainIndex.tpl');
         }
 
-        $this->_view->generate('views/mainIndex.tpl');
+
     }
 
     public function actionDelete($id)
     {
         if (!empty($id)) {
             $this->_model->delete($id);
+            $data = json_encode($this->_model->_users);
+            echo $data;
         }
 
-        header("Location: http://{$_SERVER['HTTP_HOST']}/user/output");
+//        header("Location: http://{$_SERVER['HTTP_HOST']}/user/output");
     }
 }

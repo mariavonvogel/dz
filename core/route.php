@@ -54,8 +54,8 @@ class Route
     static function Error404()
     {
 
-//        header("HTTP/1.0 404 Not Found");
-//        include 'views/404.tpl';
+        header("HTTP/1.0 404 Not Found");
+        include './views/header.tpl';
     }
 
 }
